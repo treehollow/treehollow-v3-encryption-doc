@@ -87,7 +87,7 @@ Shamir算法巧妙地构造了一个k-1次随机多项式，将核心密钥编�
    - 这样用户登录时，后端可以通过对比`email_encrypted`和服务器中的数据是否相同，以验证用户的密码。
    - 如果需要变更密码，对比`email_encrypted`然后改为新的`email_encrypted`即可，然后执行步骤4-6。
 4. 在验证完用户邮箱后，服务器的内存和数据库中会删除所有的用户邮箱明文。
-5. 对于每个用户的`password_hash`，我们使用Shamir算法生成n个密钥切片`key_share_1, ..., key_share_n`，大于等于k个切片才可以还原出random_key。生成后，服务器的内存中就删除`password_hash`的全部存在。
+5. 对于每个用户的`password_hash`，我们使用Shamir算法生成n个密钥切片`key_share_1, ..., key_share_n`，大于等于k个切片才可以还原出`password_hash`。生成后，服务器的内存中就删除`password_hash`的全部存在。
 6. 在服务器上我们通过非对称加密得到`encrypted_key_share_i = RSAEncrypt(key_share_i, public_key_1), i = 1, 2, ..., n`，然后服务器的内存中就删除`key_share_i, i = 1, 2, ..., n`的全部存在。服务器中会将`encrypted_key_share_i, i = 1, 2, ..., n`存储到数据库中。
 
 总结来说，对于每一个用户，与用户注册邮箱相关的内容，服务器只存储 `email_encrypted`, `encrypted_key_share_i, i = 1, 2, ..., n`。
